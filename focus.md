@@ -1,7 +1,7 @@
 # 踩坑记录
 
 
-### 问题一
+## 问题一
 
 ##### 描述
 之前在 github 上看的本地 commit 总是没有头像，后来发现是 `git config --local`(*\<project>/.git/config*) 没有 user 信息，所以使用了 `git config --global`(*~/.gitconfig*)。
