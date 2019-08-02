@@ -30,6 +30,7 @@
 ## git config ...
 - `git config user.name/email`: 设置当前仓库 commit 所使用的信息，email 作为唯一识别 contribution 的标志（大小写不敏感），name 暂时不知道有什么用处
 - `git config user.email`: 可以设置当前仓库 commit 所使用的邮箱，这个邮箱在 github 上可以是 primary/backup
+- github 可以关联多个邮箱账号，只要你 commit 时使用的邮箱在 github 的关联邮箱里，系统就会把这次 commit 识别为一次有效的 contribution
 
 
 ## Others
