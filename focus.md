@@ -59,3 +59,23 @@ git push --force  # rebase 后需要 force push
 3). 修改 commit message
 
 4). 如果 rebase 导致切换到了新的分支，创建一个新分支接收此次改动，switch 到原分支执行 `git rebase <new-branch>` 即可
+
+## 五
+##### 描述
+`includeIf` 区分不同目录下的 commit author 信息不起作用
+##### 解决方案
+`.gitconfig` 文件里不要存放 user 字段，例如对于工作和私人两个目录来说，应新建两个文件 `.gitconfig_personal` `.gitconfig_work` 分别存放 user 信息，而对于 proxy 及 alias 等其他内容存放到 `.gitconfig` 中
+```
+>> ~/.gitconfig
+[includeIf "gitdir:~/<xxx>/"]
+    path = .gitconfig<suffix>
+```
+- gitdir 要以 `/` 结尾
+- path 以 `.gitconfig` 文件所在路径作为当前路径
+
+PS：
+- `/etc/gitconfig` 为系统配置，优先级最高
+- `~/.gitconfig`为用户配置，优先级中等
+- `<project>/.git/config` 为项目配置，优先级最低
+
+**设置完成后可以通过 `git config --show-origin` or `git config --show-origin user.email` 来查看是否应用成功**
