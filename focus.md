@@ -20,12 +20,42 @@ git checkout -b gcy_readme  # 新建分支
 git add README.md  # 添加修改
 git commit -m "README change"  # commit
 ```
-然后发现之前创建新分支时使用的 master 已经很落后于现在 origin 的 master了，这时需要重新拉取远端内容再做修改：
+然后发现之前创建新分支时使用的 master 已经很落后于现在 origin 的 master 了，这时需要重新拉取远端内容再做修改：
 ```bash
+# on master
 git fetch origin  # 拉取远端内容（默认master）
-git rebase origin  # 添加修改
-git checkout gcy_readme  # 切换到自己的=修改分支上
-git rebase origin/master  # 把修改 rebase 到 master
+git rebase origin  # 把 master rebase 到 origin/master
+git checkout gcy_readme  # 切换到需要 rebase 的分支上
+# on gcy_readme
+git rebase origin/master  # 把当前分支 rebase 到 origin/master HEAD
 git log  # 查看 rebase 是否成功
 git push --force  # rebase 后需要 force push
 ```
+
+## 四
+##### 描述
+合并多个commit。
+##### 解决方案
+1). commands:
+- `git rebase -i ~HEAD^3`: 从当前 commit 开始合并最后三个 commit; `-i`指开启 interactive editor
+- `git rebase -i [startpoint] [endpoint]`: 从 startpoint 开始，合并到 endpoint（不包含 startpoint），endpoint 可不指定，默认值为当前分支 HEAD 所指向的 commit
+
+2). interactive editor:
+```
+- p, pick: use commit
+- r, reword: use commit, but edit the commit message
+- e, edit: use commit, but stop for amending
+- s, squash: use commit, but meld into previous commit
+- f, fixup: like "squash", but discard this commit's log message
+- x, exec: run command (the rest of the line) using shell
+- d, drop: remove commit
+```
+- 从先提交的 commit 开始，依次往后列出所有需要合并的 commit
+- <s>commit 可以重新排序，命令将会从上而下执行（例如合并两个 commit 时，将之后的 commit 放到最上面并 pick，对下一个 commit 执行 squash 的时候就可以合并到这个更新的 commit，并且 commit message 及 commit info 都会保持到这个更新的 commit）</s>（貌似会出现 conflict）
+- use commit 的意思是使用这次 commit 进行编辑
+- reword 只会要求更改 commit message, edit 将会在 rebase 到这一行时停下来，要求修改 commit message & commit contents，执行 `git commit --amend` 可以修改 message，执行 `git rebase --continue` 将会继续合并流程
+- drop 或是删除掉一个 commit 行将会导致 commit 丢失，慎用
+
+3). 修改 commit message
+
+4). 如果 rebase 导致切换到了新的分支，创建一个新分支接收此次改动，switch 到原分支执行 `git rebase <new-branch>` 即可
