@@ -89,4 +89,4 @@ merge request 将 cde 自动合并为了一个 commit 进行提交，而 test �
 ##### 解决方案
 1. 记下当前 g 的 commit hash
 2. 将 test 分支 reset 到远程 master 的状态：`git reset --hard origin/master`
-3. 将 g 的改动应用：`git cherry-pick g`
+3. 将 g 的改动应用：`git cherry-pick g` [cherry-pick](http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html)
