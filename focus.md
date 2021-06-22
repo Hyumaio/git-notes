@@ -51,7 +51,7 @@ git push --force  # rebase 后需要 force push
 - d, drop: remove commit
 ```
 - 从先提交的 commit 开始，依次往后列出所有需要合并的 commit
-- <s>commit 可以重新排序，命令将会从上而下执行（例如合并两个 commit 时，将之后的 commit 放到最上面并 pick，对下一个 commit 执行 squash 的时候就可以合并到这个更新的 commit，并且 commit message 及 commit info 都会保持到这个更新的 commit）</s>（貌似会出现 conflict）
+- <s>commit 可以重新排序，命令将会从上而下执行（例如合并两个 commit 时，将之后的 commit 放到最上面并 pick，对下一个 commit 执行 squash 的时候就可以合并到这个更新的 commit，并且 commit message 及 commit info 都会保持到这个更新的 commit）</s>（会出现大量 conflict，慎用）
 - use commit 的意思是使用这次 commit 进行编辑
 - reword 只会要求更改 commit message, edit 将会在 rebase 到这一行时停下来，要求修改 commit message & commit contents，执行 `git commit --amend` 可以修改 message，执行 `git rebase --continue` 将会继续合并流程
 - drop 或是删除掉一个 commit 行将会导致 commit 丢失，慎用
@@ -79,3 +79,14 @@ PS：
 - `<project>/.git/config` 为项目配置，优先级最低
 
 **设置完成后可以通过 `git config --show-origin` or `git config --show-origin user.email` 来查看是否应用成功**
+
+## 六
+##### 描述
+开始时：**master 分支：ab，test 分支：abcde**
+merge request 将 cde 自动合并为了一个 commit 进行提交，而 test 分支本地也进行了一次 commit
+于是：**master 分支：abf，test 分支：abcdeg**
+这样 test 分支上的 cdeg 将会和 master 分支上的 f 有冲突
+##### 解决方案
+1. 记下当前 g 的 commit hash
+2. 将 test 分支 reset 到远程 master 的状态：`git reset --hard origin/master`
+3. 将 g 的改动应用：`git cherry-pick g`

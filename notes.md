@@ -40,10 +40,10 @@
 ## Others
 - 取消到已经 push 到远程的 commit：
 
-	```
-	git reset <commit-id> --hard, 注意 --hard 会撤销你当前工作区的改动，请先保存
-	commit-id 是你想回到的版本 id
-	
-	git push --force 强制推送到远程仓库
-	
-	```
+```
+git reset <commit-id> --hard, 注意 --hard 会撤销你当前工作区的改动，请先保存
+commit-id 是你想回到的版本 id
+
+git push --force 强制推送到远程仓库
+
+```
